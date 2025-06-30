@@ -8,16 +8,22 @@ import { setCredentials } from "../../redux/features/auth/authSlice";
 
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const [username, setUserName] = useState(userInfo?.username || "");
-  const [email, setEmail] = useState(userInfo?.email || "");
+  // const a = useSelector((state) => state);
+  // console.log(a);
+  //   ?? (Nullish Coalescing)
+  // ?? returns the right side only if the left side is null or undefined.
+  const [username, setUserName] = useState(() => userInfo?.username ?? "");
+  const [email, setEmail] = useState(() => userInfo?.email ?? "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  //   Extracting the updateProfile function
+  // Extracting isLoading and renaming it to loadingUpdateProfile
   const [updateProfile, { isLoading: loadingUpdateProfile }] =
     useProfileMutation();
   useEffect(() => {
-    setUserName(userInfo.username);
-    setEmail(userInfo.email);
-  }, [userInfo.username, userInfo.email]);
+    setUserName(userInfo?.username ?? "");
+    setEmail(userInfo?.email ?? "");
+  }, [userInfo]);
 
   const dispatch = useDispatch();
   const submitHandler = async (e) => {
@@ -32,12 +38,11 @@ const Profile = () => {
           email,
           password,
         });
+
+        const updatedUser = res?.data?.updatedProfile;
+        console.log(updatedUser);
         toast.success(res?.data?.message || "your profile Updated");
-        dispatch(
-          setCredentials({
-            ...res,
-          })
-        );
+        dispatch(setCredentials(updatedUser));
       } catch (err) {
         toast.error(err?.data?.message || err.message);
       }
@@ -52,11 +57,11 @@ const Profile = () => {
             <div className="mb-4">
               <label className="block text-white mb-2">Name</label>
               <input
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
                 type="text"
                 placeholder="Enter name"
                 className="form-input p-4 rounded-sm w-full border border-pink-500 focus:outline-none"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
 

@@ -19,6 +19,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  // const r = useRegisterMutation();
+  // console.log(r);
   const [register, { isLoading }] = useRegisterMutation();
 
   useEffect(() => {
@@ -36,12 +38,7 @@ const Register = () => {
       try {
         const res = await register({ username, email, password }).unwrap();
         const { token, ...userData } = res;
-        dispatch(
-          setCredentials({
-            user: userData,
-            token: token,
-          })
-        );
+        dispatch(setCredentials({ ...userData }, token));
         toast.success("User successfully registered");
         navigate(redirect);
       } catch (err) {
@@ -146,7 +143,7 @@ const Register = () => {
         <img
           src="https://images.unsplash.com/photo-1576502200916-3808e07386a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2065&q=80"
           alt=""
-          className="h-[65rem] w-[59%] xl:block md:hidden sm:hidden rounded-lg"
+          className="h-[30rem] w-[50%] xl:block md:hidden sm:hidden rounded-lg"
         />
       </section>
     </div>

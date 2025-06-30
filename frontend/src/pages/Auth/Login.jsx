@@ -15,13 +15,10 @@ const Login = () => {
 
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
-
   const { search } = useLocation();
-  console.log("search---", search);
   const sp = new URLSearchParams(search);
-  console.log("sp-->", sp);
+
   const redirect = sp.get("redirect") || "/";
-  console.log("redirect---", redirect);
 
   useEffect(() => {
     if (userInfo) {
@@ -37,12 +34,7 @@ const Login = () => {
       // dispatch(setCredentials({ ...res }));
       // ✅ Extract user data and token
       const { token, ...userData } = res;
-      dispatch(
-        setCredentials({
-          user: userData,
-          token: token,
-        })
-      );
+      dispatch(setCredentials({ ...userData }, token));
       toast.success(userData.message);
       navigate(redirect);
     } catch (err) {
@@ -116,7 +108,7 @@ const Login = () => {
         <img
           src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80"
           alt=""
-          className="h-[65rem] w-[59%] xl:block md:hidden sm:hidden rounded-lg"
+          className="h-[30rem] w-[50%] xl:block md:hidden sm:hidden rounded-lg"
         />
       </section>
     </div>

@@ -88,10 +88,13 @@ export const getuserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
   if (user) {
     return res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      message: ` ${user.username} Your profile updated successfully`,
+      updatedProfile: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
     });
   } else {
     res.status(404);
@@ -124,16 +127,19 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     user.password = hashedPassword;
   }
-
   const updatedUser = await user.save();
   console.log("updated user -->", updatedUser);
+  const token = generateToken(res, updatedUser._id);
   return res.status(200).json({
     message: `${updatedUser.username} Your Profile Updated successfully...✔️`,
-    _id: updatedUser._id,
-    username: updatedUser.username,
-    email: updatedUser.email,
-    password: updatedUser.password,
-    isAdmin: updatedUser.isAdmin,
+    updatedProfile: {
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      password: updatedUser.password,
+      isAdmin: updatedUser.isAdmin,
+      token: token,
+    },
   });
 });
 
@@ -146,16 +152,19 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     user.password = hashedPassword;
   }
-
   const updatedUser = await user.save();
   console.log("updated user -->", updatedUser);
+  const token = generateToken(res, updatedUser._id);
   return res.status(200).json({
     message: `${updatedUser.username} Your Profile Updated successfully...✔️`,
-    _id: updatedUser._id,
-    username: updatedUser.username,
-    email: updatedUser.email,
-    password: updatedUser.password,
-    isAdmin: updatedUser.isAdmin,
+    updatedProfile: {
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      password: updatedUser.password,
+      isAdmin: updatedUser.isAdmin,
+      token: token,
+    },
   });
 });
 

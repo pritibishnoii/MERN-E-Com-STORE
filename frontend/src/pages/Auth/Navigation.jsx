@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Navigation.css";
 import {
   AiOutlineHome,
@@ -16,6 +16,8 @@ import { logout } from "../../redux/features/auth/authSlice";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  // const a = useLogoutMutation();
+  // console.log(a);
   const [logoutApiCall] = useLogoutMutation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -113,23 +115,23 @@ const Navigation = () => {
             {/* if user is Admin then show this dashboard menu */}
             {userInfo.isAdmin && (
               <>
-                <li className="">
+                <li className="text-left">
                   <Link
                     to="/admin/dashboard"
-                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer "
                   >
                     Dashboard
                   </Link>
                 </li>
-                <li className="">
+                <li className=" text-left">
                   <Link
                     to="/admin/productlist"
-                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer "
                   >
                     Product
                   </Link>
                 </li>
-                <li className="">
+                <li className="text-left">
                   <Link
                     to="/admin/categorylist"
                     className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -137,7 +139,7 @@ const Navigation = () => {
                     Category
                   </Link>
                 </li>
-                <li className="">
+                <li className="text-left">
                   <Link
                     to="/admin/orderlist"
                     className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -145,7 +147,7 @@ const Navigation = () => {
                     Orders
                   </Link>
                 </li>
-                <li className="">
+                <li className="text-left">
                   <Link
                     to="/admin/userlist"
                     className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -157,7 +159,7 @@ const Navigation = () => {
             )}
 
             {/* if not user Admin only show this two things profile and logout  */}
-            <li>
+            <li className="text-left">
               <Link
                 to="/profile"
                 className="block px-4 py-2 rounded hover:bg-gray-100 cursor-pointer"
@@ -166,7 +168,7 @@ const Navigation = () => {
               </Link>
             </li>
 
-            <li>
+            <li className="text-left">
               <button
                 onClick={logoutHandler}
                 className="block w-full py-2 px-4 text-left rounded hover:bg-gray-100 cursor-pointer"
