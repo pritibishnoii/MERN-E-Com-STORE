@@ -24,13 +24,13 @@ router.post("/logout", logout); // for logout
 // for current logedin user  who can see and update his/her profile
 router
   .route("/profile")
-  .get(authenticate, getCurrentUserProfile)
-  .put(authenticate, updateCurrentUserProfile);
-
+  .all(authenticate)
+  .get(getCurrentUserProfile)
+  .put(updateCurrentUserProfile);
 // ADMIN ROUTES 👇 // admin can have access and change
 router
   .route("/:id")
-  .get(authenticate, authenticate, getuserById)
+  .get(authenticate, authorizeAdmin, getuserById)
   .put(authenticate, authorizeAdmin, updateUserProfile)
   .delete(authenticate, authorizeAdmin, deleteUser);
 

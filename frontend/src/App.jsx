@@ -1,7 +1,7 @@
 import "./App.css";
-import {Outlet} from "react-router-dom";
-import {ToastContainer} from "react-toastify";
-import  'react-toastify/dist/ReactToastify.css'
+import { Outlet } from "react-router-dom";
+import { ToastContainer, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navigation from "./pages/Auth/Navigation";
 
 function App() {
@@ -9,11 +9,18 @@ function App() {
   const data = [];
   return (
     <>
-  <ToastContainer/>
-  <Navigation/>
-  <main className="py-3">
-    <Outlet/>
-  </main>
+      <ToastContainer
+        position="top-center"
+        transition={Flip}
+        theme="dark"
+        autoClose={800}
+        closeOnClick
+        hideProgressBar
+      />
+      <Navigation />
+      <main className="py-3">
+        <Outlet />
+      </main>
     </>
   );
 }

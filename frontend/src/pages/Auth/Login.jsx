@@ -30,8 +30,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res);
-      // dispatch(setCredentials({ ...res }));
       // ✅ Extract user data and token
       const { token, ...userData } = res;
       dispatch(setCredentials({ ...userData }, token));

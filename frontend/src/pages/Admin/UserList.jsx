@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import AdminMenu from "./AdminMenu";
-import PopupModal from "../../components/PopupModal";
+import Modal from "../../components/Modal";
 
 const UserList = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -62,7 +62,6 @@ const UserList = () => {
       <h1 className="text-2xl font-semibold my-6 text-center uppercase ">
         Users Details
       </h1>
-
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -74,7 +73,7 @@ const UserList = () => {
           <AdminMenu />
           <table className="w-full md:w-4/5 mx-auto my-2">
             <thead>
-              <tr className="bg-pink-500">
+              <tr className="bg-linear-to-r from-[#f74c9b] to-[#721f76] ">
                 <th className="px-4 py-2 text-left">ID</th>
                 <th className="px-4 py-2 text-left">NAME</th>
                 <th className="px-4 py-2 text-left">EMAIL</th>
@@ -181,15 +180,42 @@ const UserList = () => {
           </table>
         </div>
       )}
-
       {showModal && (
-        <PopupModal
+        <Modal
+          isOpen={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setUserIdToDelete(null);
+          }}
           onConfirm={deleteHandler}
           onCancel={() => {
             setShowModal(false);
             setUserIdToDelete(null);
           }}
-        />
+        >
+          <div className="px-4 py-2">
+            <h2 className="text-pink-200 font-semibold">
+              Are you sure you want to delete this user?
+            </h2>
+            <div className=" flex justify-around mt-4">
+              <button
+                className="cursor-pointer bg-pink-500 text-white px-4 py-2 rounded mr-2 font-semibold "
+                onClick={deleteHandler}
+              >
+                Delete
+              </button>
+              <button
+                className=" cursor-pointer bg-gray-300 px-4 py-2 rounded text-pink-600 font-semibold"
+                onClick={() => {
+                  setShowModal(false);
+                  setUserIdToDelete(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );
