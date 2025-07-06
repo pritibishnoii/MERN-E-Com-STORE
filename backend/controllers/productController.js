@@ -68,20 +68,46 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 
 export const updateProduct = asyncHandler(async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(
+    // First handle the file upload if present
+    let imagePath;
+    if (req.file) {
+      imagePath = `/uploads/${req.file.filename}`; // Adjust path as needed
+    }
+
+    // Then handle other form data
+    const updates = {
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      quantity: req.body.quantity,
+      brand: req.body.brand,
+      countInStock: req.body.countInStock,
+      ...(imagePath && { image: imagePath }), // Only add image if it exists
+    };
+
+    const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      {
-        ...req.body,
-      },
-      { new: true }
+      updates,
+      { new: true, runValidators: true }
     );
-    await product.save();
-    return res.status(200).json({
-      message: "product updated successfully.",
-      product,
+
+    if (!updatedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      product: updatedProduct,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error("Update error:", error);
+    res.status(500).json({
+      success: false,
       message: error.message || "Internal server error",
     });
   }
