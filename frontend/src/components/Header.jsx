@@ -6,7 +6,7 @@ import SmallProducts from "../pages/Products/SmallProduct";
 
 const Header = () => {
   const { data, isLoading, error } = useGetTopProductsQuery();
-  // console.log(data);
+  // console.log(data.products);
   if (isLoading) {
     return <Loader />;
   }

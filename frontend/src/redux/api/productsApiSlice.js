@@ -33,6 +33,12 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     allProducts: builder.query({
       query: () => `${PRODUCT_URL}/allProducts`,
     }),
+    getProductDetails: builder.query({
+      query: (productId) => ({
+        url: `${PRODUCT_URL}/${productId}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
 
     updateProduct: builder.mutation({
       query: ({ productId, formData }) => ({
@@ -53,7 +59,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 
     createReview: builder.mutation({
       query: (data) => ({
-        url: `${PRODUCT_URL}/${data.productId}`,
+        url: `${PRODUCT_URL}/${data.productId}/reviews`,
         method: "POST",
         body: data,
       }),
